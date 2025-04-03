@@ -1,73 +1,66 @@
-# Welcome to your Lovable project
 
-## Project info
+# OrderMade - White-label Order Management Platform
 
-**URL**: https://lovable.dev/projects/0d385b75-e952-4e7b-96af-b852d2ca2387
+## Overview
 
-## How can I edit this code?
+OrderMade is a white-label order management platform that dynamically renders company-specific dashboards based on subdomains. For example, daraz.ordermade.com shows Daraz's logo and orders, while foodpanda.ordermade.com displays FoodPanda's branding and orders.
 
-There are several ways of editing your application.
+## Features
 
-**Use Lovable**
+- Dynamic subdomain rendering with company-specific branding
+- Sortable order table with pagination
+- Responsive design for all device sizes
+- Local development support with URL parameter simulation
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/0d385b75-e952-4e7b-96af-b852d2ca2387) and start prompting.
+## Technical Implementation
 
-Changes made via Lovable will be committed automatically to this repo.
+### Dynamic Subdomains
 
-**Use your preferred IDE**
+The application uses a subdomain detection system to identify which company's dashboard to display:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+1. In production, the subdomain is extracted from the hostname (e.g., `daraz.ordermade.com` → `daraz`)
+2. For local development, a URL parameter is used: `localhost:8080?company=daraz`
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Local Development Setup
 
-Follow these steps:
+Since subdomains like `daraz.localhost:8080` might not work consistently, the application uses URL query parameters for local development:
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+http://localhost:8080?company=daraz
+http://localhost:8080?company=foodpanda
 ```
 
-**Edit a file directly in GitHub**
+### Adding New Companies
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+To add a new company (e.g., Amazon):
 
-**Use GitHub Codespaces**
+1. Add a new entry to the `companies` array in `src/data/companies.ts`:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```typescript
+{
+  id: 'amazon',
+  name: 'Amazon',
+  logo: '/logos/amazon.png',
+  primaryColor: '#FF9900',
+  secondaryColor: '#146EB4',
+  domain: 'amazon'
+}
+```
 
-## What technologies are used for this project?
+2. Add the company logo to the `public/logos/` directory
+3. The system will automatically handle the rest, and the company will be accessible via:
+   - Production: `amazon.ordermade.com`
+   - Local development: `localhost:8080?company=amazon`
 
-This project is built with:
+## Technology Stack
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- React / TypeScript
+- Tailwind CSS for styling
+- shadcn/ui components
 
-## How can I deploy this project?
+## Running the Project
 
-Simply open [Lovable](https://lovable.dev/projects/0d385b75-e952-4e7b-96af-b852d2ca2387) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Start the development server: `npm run dev`
+4. Access with company parameter: `http://localhost:8080?company=daraz`
