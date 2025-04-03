@@ -13,17 +13,17 @@ const DomainSwitcher: React.FC<DomainSwitcherProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   
-  const changeCompany = (domain: string) => {
+  const changeCompany = (companyDomain: string) => {
     // For local development, use query params
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      window.location.href = `${window.location.origin}?company=${domain}`;
+      window.location.href = `${window.location.origin}?company=${companyDomain}`;
       return;
     }
     
     // For production, use subdomains
     const hostParts = window.location.hostname.split('.');
-    const domain = hostParts.slice(1).join('.');
-    window.location.href = `https://${domain}.${domain}`;
+    const rootDomain = hostParts.slice(1).join('.');
+    window.location.href = `https://${companyDomain}.${rootDomain}`;
   };
   
   return (
